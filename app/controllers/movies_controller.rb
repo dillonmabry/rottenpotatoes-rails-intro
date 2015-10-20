@@ -9,9 +9,16 @@ class MoviesController < ApplicationController
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
-
+  
+  # # def index
+  # #   @movies = Movie.all
+  # #   @movies = Movie.order(params[:sort_by])
+  # # end
+  
   def index
     @movies = Movie.all
+    @movies = Movie.order(params[:sort])
+    @sort_column = params[:sort]
   end
 
   def new
