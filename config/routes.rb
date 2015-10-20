@@ -16,6 +16,11 @@ Rails.application.routes.draw do
 
   root :to => 'movies#index'
   
+  def index
+    @movies = Movie.order(params[:sort_by])
+    @sort_column = params[:sort_by]
+  end
+  
   resources :movies
   
   # Example resource route with options:
