@@ -11,12 +11,88 @@ class MoviesController < ApplicationController
   end
   
   def index
+    
+    # @movies = Movie.all.order(params[:sort])
+    # @sort_column = params[:sort]
+    # # ratings sorting
+    # @all_ratings = Movie.all_ratings
+    # @selected_ratings = (params[:ratings].present? ? params[:ratings] : [])
+    # @movies = @movies.where(:rating => params[:ratings]) if params[:ratings].present?
+    
+     
     @movies = Movie.all.order(params[:sort])
     @sort_column = params[:sort]
     # ratings sorting
     @all_ratings = Movie.all_ratings
     @selected_ratings = (params[:ratings].present? ? params[:ratings] : [])
     @movies = @movies.where(:rating => params[:ratings]) if params[:ratings].present?
+    
+    # session[:ratings] = @selected_ratings
+    # session[:order_by] = @selected_ratings[:order_by]
+
+    
+  # setup = Movie.set_options(params, session) 
+  
+  # if setup[:redirect]
+  #   flash.keep
+    
+  #   redirect_to(:action => params[:action], :controller => params[:controller],
+  #     :ratings => setup[:ratings], :order_by => setup[:order_by])
+  # end
+  
+  # @ratings = Movie.ratings
+  # @filters = setup[:ratings]
+  # @movies = Movie.movies(@filters, setup[:order_by])
+  
+  # session[:ratings] = setup[:ratings]
+  # session[:order_by] = setup[:order_by]
+  
+  # @all_ratings = Movie.all_ratings
+  # session[:sort] ||= 'id'
+  # session[:selected_ratings] ||= Movie.all_ratings
+  
+  # redirect = false
+  
+  # if !params.has_key?(:sort)
+  #   sort = session[:sort]
+  #   redirect = true
+  # else 
+  #   sort = params[:sort]
+  # end
+  
+  # @movies = Movie.movies(@selected_ratings, sort[:order_by])
+  
+  # if !params.has_key?(:ratings)
+  #   @selected_ratings = session[:selected_ratings]
+  #   redirect = true
+  # else 
+  #   @selected_ratings = params[:ratings]
+  # end
+  
+  # if redirect
+  #   rHash = Hash.new
+  #   rHash['sort'] = sort
+  #   @selected_ratings.each do |r|
+  #     k = 'ratings[#{r}]'
+  #     rHash[k] = r
+  #   end
+  
+  #   flash.keep
+  #   redirect_to movies_path :ratings => @selected_ratings, :sort => sort
+  #   return
+  # end
+    
+  # if sort == 'title'
+  #   @title_sort = 'hilite'
+  # end
+  
+  # if sort == 'rating'
+  #   @rating_sort = 'hilite'
+  # end
+  
+  # session[:sort] = sort
+  # session[:selected_ratings] = @selected_ratings
+    
     
   end
 

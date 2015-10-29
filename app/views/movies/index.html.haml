@@ -1,16 +1,127 @@
--#  This file is app/views/movies/index.html.haml
+// -#  This file is app/views/movies/index.html.haml 
+// -# current heroku url: http://lit-ridge-5039.herokuapp.com/
+// %h1 All Movies
+
+// = form_tag movies_path, :method => :get, :id=>'ratings_form' do
+//   Include:
+//   - @all_ratings.each do |rating|
+//     = rating
+//     = check_box_tag "ratings[#{rating}]"
+//   = submit_tag 'Refresh', :id => 'ratings_submit'
+
+// %table#movies
+//   %thead
+//     %tr
+//       %th{:class=> @title_sort}
+//         %a{:href => movies_path(:sort => 'title')} Movie Title, :id=>title_header
+//       %th Rating
+//       %th{:class=> @rating_sort}
+//         %a{:href => movies_path(:sort => 'rating')} Rating, :id=>"release_date_header"
+//       %th More Info
+//   %tbody
+//     - @movies.each do |movie|
+//       %tr
+//         %td= movie.title
+//         %td= movie.rating
+//         %td= movie.release_date
+//         %td= link_to "More about #{movie.title}", movie_path(movie)
+
+// = link_to 'Add new movie', new_movie_path
+
+
+
+
+
+// -#  This file is app/views/movies/index.html.haml 
+// -# current heroku url: http://lit-ridge-5039.herokuapp.com/
+// %h1 All Movies
+
+// = form_tag movies_path, :method => :get, :id=>'ratings_form' do
+//   Include:
+//   - @all_ratings.each do |rating|
+//     = rating
+//     = check_box_tag "ratings[#{rating}]", 1, (true if @ratings[rating]), :id=>"ratings_#{rating}"
+//   = submit_tag 'Refresh', {:id => 'ratings_submit'}
+
+// %table#movies
+//   %thead
+//     %tr
+//       %th{:class=>("hilite" if @sort_by == 'title')}= link_to 'Movie Title', 
+//         movies_path(:sort_by => :title, :ratings => @ratings), :id=>'title_header'
+//       %th Rating
+//       %th{:class=>("hilite" if @sort_by == 'release_date')}= link_to 'Release Date', 
+//       movies_path(:sort_by => :release_date, :ratings=>@ratings), :id=>"release_date_header"
+//       %th More Info
+//   %tbody
+//     - @movies.each do |movie|
+//       %tr
+//         %td= movie.title
+//         %td= movie.rating
+//         %td= movie.release_date
+//         %td= link_to "More about #{movie.title}", movie_path(movie)
+
+// = link_to 'Add new movie', new_movie_path
+
+
+
+
+
+
+
+
+
+
+
+
+// -#  This file is app/views/movies/index.html.haml 
+// -# current heroku url: http://lit-ridge-5039.herokuapp.com/
+// %h1 All Movies
+
+// = form_tag movies_path, {:method => :get, :id=>'ratings_form'} do
+//   Include:
+//   - @ratings.each do |rating|
+//     = check_box_tag "ratings[#{rating}]", 1, (@filters.include? rating)
+//     = rating
+//   = submit_tag 'Refresh', {:id => 'ratings_submit'}
+
+// %table#movies
+//   %thead
+//     %tr
+//       %th{:class=>(:hilite if params[:order_by] == 'title')}= link_to 'Movie Title', 
+//         movies_path(:order_by => :title), :id=>'title_header'
+//       %th Rating
+//       %th{:class=>(:hilite if params[:order_by] == 'release_date')}= link_to 'Release Date', 
+//       movies_path(:order_by => :release_date), :id=>"release_date_header"
+//       %th More Info
+//   %tbody
+//     - @movies.each do |movie|
+//       %tr
+//         %td= movie.title
+//         %td= movie.rating
+//         %td= movie.release_date
+//         %td= link_to "More about #{movie.title}", movie_path(movie)
+
+// = link_to 'Add new movie', new_movie_path
+
+
+
+
+
+
+
+
+-#  This file is app/views/movies/index.html.haml 
+-# current heroku url: http://lit-ridge-5039.herokuapp.com/
 %h1 All Movies
 
 %table#movies
   %thead
     %tr
       %th{:class=>('hilite' if @sort_column == 'title')}= link_to 'Movie Title', 
-        movies_path(:sort => 'title'), 
-        :id=>'title_header'
+        movies_path(:sort => 'title', :ratings =>params[:ratings]), :id=>'title_header'
       %th Rating
       %th{:class=>("hilite" if @sort_column == "release_date")}= link_to 'Release Date', 
-      movies_path(:sort=>'release_date'), 
-        :id=>"release_date_header"
+      movies_path(:sort=>'release_date', :ratings =>params[:ratings]), :id=>"release_date_header"
       %th More Info
   %tbody
     - @movies.each do |movie|
@@ -25,25 +136,7 @@
 = form_tag movies_path, :method => :get, :id=>'ratings_form' do
   Include:
   - @all_ratings.each do |rating|
-    = check_box_tag "ratings[]", rating, @selected_ratings.include?(rating), 
-      {:checked=>"checked"}
+    = check_box_tag "ratings[]", rating, @selected_ratings.include?(rating)
     = rating
   = submit_tag 'Refresh', :id => 'ratings_submit'
 
-// %table#movies
-//   %thead
-//     %tr
-//       %th=link_to 'Movie Title', movies_path(:sort => 'title')   
-//       %th Rating
-//       // %th{:class=>("hilite" if @sort_column == "release_date")}= link_to 'Release Date', movies_path(:sort_by=>'release_date'), :id=>"release_date_header"
-//       %th Release Date
-//       %th More Info
-//   %tbody
-//     - @movies.each do |movie|
-//       %tr
-//         %td= movie.title 
-//         %td= movie.rating
-//         %td= movie.release_date
-//         %td= link_to "More about #{movie.title}", movie_path(movie)
-
-// = link_to 'Add new movie', new_movie_path
