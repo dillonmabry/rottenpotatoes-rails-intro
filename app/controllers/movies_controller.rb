@@ -19,81 +19,50 @@ class MoviesController < ApplicationController
     # @selected_ratings = (params[:ratings].present? ? params[:ratings] : [])
     # @movies = @movies.where(:rating => params[:ratings]) if params[:ratings].present?
     
-     
-    @movies = Movie.all.order(params[:sort])
-    @sort_column = params[:sort]
-    # ratings sorting
-    @all_ratings = Movie.all_ratings
-    @selected_ratings = (params[:ratings].present? ? params[:ratings] : [])
-    @movies = @movies.where(:rating => params[:ratings]) if params[:ratings].present?
+    @all_ratings = Movie.ratings
+    @movies = Movie.all
     
-    # session[:ratings] = @selected_ratings
-    # session[:order_by] = @selected_ratings[:order_by]
+    # if the ratings params is not empty set session for selected ratings
+    if !(params[:ratings].nil?)
+      @selected_ratings = params[:ratings]
+      session[:selected_ratings] = @selected_ratings
+    end
+    
+    # if the sort params empty do nothing
+    if params[:sort_column].nil?
+      # do nothing
+    # else set the session for the sorting params
+    else
+      session[:sort_column] = params[:sort_column]
+    end
+    
+    # if the sorting params and ratings params is empty
+    # if the session has been set with selected ratings
+    if params[:sort_column].nil? && params[:ratings].nil? && session[:selected_ratings]
+      @selected_ratings = session[:selected_ratings]
+      @sort_column = session[:sort_column]
+      flash.keep
+      redirect_to movies_path(order_by: @sort_column, ratings: @selected_ratings)
+    end
+    
+    if session[:selected_ratings]
+      @movies = @movies.select { |item| session[:selected_ratings].include?(item.rating) }
+    end
 
-    
-  # setup = Movie.set_options(params, session) 
+    # if the session is sort by title sort
+    if session[:sort_column] == "title"
+      @movies = @movies.sort! { |a,b| a.title <=> b.title }
+      # highlight the instance variable
+      @title_sort= "hilite"
+    # if the session is sort by release date sort
+    elsif session[:sort_column] == "release_date"
+      @movies = @movies.sort! { |a,b| a.release_date <=> b.release_date }
+      # highlight the instance variable
+      @release_sort = "hilite"
+    else
+      # do nothing
+    end
   
-  # if setup[:redirect]
-  #   flash.keep
-    
-  #   redirect_to(:action => params[:action], :controller => params[:controller],
-  #     :ratings => setup[:ratings], :order_by => setup[:order_by])
-  # end
-  
-  # @ratings = Movie.ratings
-  # @filters = setup[:ratings]
-  # @movies = Movie.movies(@filters, setup[:order_by])
-  
-  # session[:ratings] = setup[:ratings]
-  # session[:order_by] = setup[:order_by]
-  
-  # @all_ratings = Movie.all_ratings
-  # session[:sort] ||= 'id'
-  # session[:selected_ratings] ||= Movie.all_ratings
-  
-  # redirect = false
-  
-  # if !params.has_key?(:sort)
-  #   sort = session[:sort]
-  #   redirect = true
-  # else 
-  #   sort = params[:sort]
-  # end
-  
-  # @movies = Movie.movies(@selected_ratings, sort[:order_by])
-  
-  # if !params.has_key?(:ratings)
-  #   @selected_ratings = session[:selected_ratings]
-  #   redirect = true
-  # else 
-  #   @selected_ratings = params[:ratings]
-  # end
-  
-  # if redirect
-  #   rHash = Hash.new
-  #   rHash['sort'] = sort
-  #   @selected_ratings.each do |r|
-  #     k = 'ratings[#{r}]'
-  #     rHash[k] = r
-  #   end
-  
-  #   flash.keep
-  #   redirect_to movies_path :ratings => @selected_ratings, :sort => sort
-  #   return
-  # end
-    
-  # if sort == 'title'
-  #   @title_sort = 'hilite'
-  # end
-  
-  # if sort == 'rating'
-  #   @rating_sort = 'hilite'
-  # end
-  
-  # session[:sort] = sort
-  # session[:selected_ratings] = @selected_ratings
-    
-    
   end
 
   def new
