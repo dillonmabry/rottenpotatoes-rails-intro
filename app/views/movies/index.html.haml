@@ -23,9 +23,9 @@
   Include:
   - @all_ratings.each do |rating|
     - if session[:selected_ratings].nil? or session[:selected_ratings].include? rating
-      = check_box_tag "ratings[#{rating}]", 1, {checked: true}
+      = check_box_tag "ratings[#{rating}]", 1, true
     - else
-      = check_box_tag "ratings[#{rating}]", 1, {checked: false}
+      = check_box_tag "ratings[#{rating}]", 1, false
     = rating
   = submit_tag 'Refresh', :id => "ratings_submit"
 
